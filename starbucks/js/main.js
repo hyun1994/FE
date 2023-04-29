@@ -1,22 +1,6 @@
-const searchEl = document.querySelector('.search'); //document==html
-const searchInputEl = searchEl.querySelector('input');
-
-searchEl.addEventListener('click', function() {
-    // Logic...
-    searchInputEl.focus();
-});
-
-searchInputEl.addEventListener('focus', function() {
-    searchEl.classList.add('focused');
-    searchInputEl.setAttribute('placeholder', '통합검색');
-});
-
-searchInputEl.addEventListener('blur', function() {
-    searchEl.classList.remove('focused');
-    searchInputEl.setAttribute('placeholder', '');
-});
-
 const badgeEl = document.querySelector('header .badges');
+const toTopEl = document.querySelector('#to-top');
+
 window.addEventListener('scroll', _.throttle(function () {
     console.log(window.scrollY);
     if (window.scrollY > 500) {
@@ -26,14 +10,28 @@ window.addEventListener('scroll', _.throttle(function () {
             opacity : 0,
             display : 'none'
         });
+        // 버튼 보이기
+        gsap.to(toTopEl, .2, {
+            x: 0
+        });
     } else {
         // 배지 보이기
         gsap.to(badgeEl, .6, {
             opacity : 1,
             display : 'block'
         });
+        // 버튼 숨기기
+        gsap.to(toTopEl, .2, {
+            x: 100
+        });
     }
 }, 300)); // _.throttle(함수, 시간)
+
+toTopEl.addEventListener('click', function () {
+    gsap.to(window, .7, {
+        scrollTo: 0
+    });
+})
 
 const fadeEls = document.querySelectorAll('.visual .fade-in');
 fadeEls.forEach(function (fadeEl, index) {
@@ -66,6 +64,16 @@ new Swiper('.promotion .swiper-container', {
     navigation: {
         prevEl: '.promotion .swiper-prev',
         nextEl: '.promotion .swiper-next',
+    }
+});
+new Swiper('.awards .swiper-container', {
+    autoplay: true,
+    loop: true,
+    spaceBetween: 30,
+    slidesPerView: 5,
+    navigation: {
+        prevEl: '.awards .swiper-prev',
+        nextEl: '.awards .swiper-next'
     }
 });
 
@@ -102,3 +110,15 @@ function floatingObject(selector, delay, size) {
 floatingObject('.floating1', 1, 15);
 floatingObject('.floating2', .5, 15);
 floatingObject('.floating3', 1.5, 20);
+
+
+const spyEls = document.querySelectorAll('section.scroll-spy');
+spyEls.forEach(function (spyEl) {
+    new ScrollMagic
+        .Scene({
+            triggerElement: spyEl, // 보여짐 여부를 감시할 요소를 지정
+            triggerHook: .8
+        })
+        .setClassToggle(spyEl, 'show')
+        .addTo(new ScrollMagic.Controller());
+});
