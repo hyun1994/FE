@@ -720,14 +720,20 @@ parcelHelpers.defineInteropFlag(exports);
 var _core = require("../core/core");
 var _homeJs = require("./Home.js");
 var _homeJsDefault = parcelHelpers.interopDefault(_homeJs);
+var _movie = require("./Movie");
+var _movieDefault = parcelHelpers.interopDefault(_movie);
 exports.default = (0, _core.createRouter)([
     {
         path: "#/",
         component: (0, _homeJsDefault.default)
+    },
+    {
+        path: "#/movie",
+        component: (0, _movieDefault.default)
     }
 ]);
 
-},{"../core/core":"3SuZC","./Home.js":"0JSNG","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"0JSNG":[function(require,module,exports) {
+},{"../core/core":"3SuZC","./Home.js":"0JSNG","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./Movie":"1LTyN"}],"0JSNG":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _core = require("../core/core");
@@ -784,7 +790,7 @@ class Search extends (0, _core.Component) {
     render() {
         this.el.classList.add("search");
         this.el.innerHTML = /* html */ `
-            <input placeholder="Enter the Movie Title to Search!" />
+            <input value="${(0, _movieDefault.default).state.searchText}" placeholder="Enter the Movie Title to Search!" />
             <button class="btn btn-primary">
                 Search!
             </button>
@@ -808,12 +814,14 @@ exports.default = Search;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "searchMovies", ()=>searchMovies);
+parcelHelpers.export(exports, "getMovieDetails", ()=>getMovieDetails);
 var _core = require("../core/core");
 const store = new (0, _core.Store)({
     searchText: "",
     page: 1,
     pageMax: 1,
     movies: [],
+    movie: {},
     loading: false,
     message: "Search For the Movie Title!"
 });
@@ -842,6 +850,14 @@ const searchMovies = async (page)=>{
         console.log("searchMovies error : ", error);
     } finally{
         store.state.loading = false;
+    }
+};
+const getMovieDetails = async (id)=>{
+    try {
+        const res = await fetch(`https://omdbapi.com?apikey=7035c60c&i=${id}&plot=full`);
+        store.state.movie = await res.json();
+    } catch (error) {
+        console.log("getMovieDetails error : ", error);
     }
 };
 
@@ -938,6 +954,71 @@ class MovieListMore extends (0, _core.Component) {
     }
 }
 exports.default = MovieListMore;
+
+},{"../core/core":"3SuZC","../store/movie":"kq1bo","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1LTyN":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _core = require("../core/core");
+var _movie = require("../store/movie");
+var _movieDefault = parcelHelpers.interopDefault(_movie);
+class Movie extends (0, _core.Component) {
+    async render() {
+        this.el.classList.add("container", "the-movie");
+        this.el.innerHTML = /* html */ `
+            <div class="poster skeleton"></div>
+            <div class="specs">
+                <div class="title skeleton"></div>
+                <div class="labels skeleton"></div>
+                <div class="plot skeleton"></div>
+            </div>
+        `;
+        await (0, _movie.getMovieDetails)(history.state.id);
+        console.log((0, _movieDefault.default).state.movie);
+        const { movie  } = (0, _movieDefault.default).state;
+        const bigPoster = movie.Poster.replace("SX300", "SX700");
+        this.el.innerHTML = /* html */ `
+            <div style="background-image: url(${bigPoster})" class="poster"></div>
+            <div class="specs">
+                <div class="title">
+                    ${movie.Title}
+                </div>
+                <div class="labels">
+                    <span>${movie.Released}</span>
+                    &nbsp;/&nbsp;
+                    <span>${movie.Runtime}</span>
+                    &nbsp;/&nbsp;
+                    <span>${movie.Country}</span>
+                </div>
+                <div class="plot">
+                    ${movie.Plot}
+                </div>
+                <div>
+                    <h3>Ratings</h3>
+                    ${movie.Ratings.map((rating)=>{
+            return `<p>${rating.Source} - ${rating.Value}</p>`;
+        }).join("")}
+                </div>
+                <div>
+                    <h3>Actors</h3>
+                    <p>${movie.Actor}</p>
+                </div>
+                <div>
+                    <h3>Director</h3>
+                    <p>${movie.Director}</p>
+                </div>
+                <div>
+                    <h3>Production</h3>
+                    <p>${movie.Production}</p>
+                </div>
+                <div>
+                    <h3>Genre</h3>
+                    <p>${movie.Genre}</p>
+                </div>
+            </div>
+        `;
+    }
+}
+exports.default = Movie;
 
 },{"../core/core":"3SuZC","../store/movie":"kq1bo","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["f3BSW","gLLPy"], "gLLPy", "parcelRequire69fa")
 
