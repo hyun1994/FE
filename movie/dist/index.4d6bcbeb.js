@@ -587,15 +587,21 @@ root.append(new (0, _appDefault.default)().el);
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _core = require("./core/core");
+var _theHeader = require("./components/TheHeader");
+var _theHeaderDefault = parcelHelpers.interopDefault(_theHeader);
+var _theFooter = require("./components/TheFooter");
+var _theFooterDefault = parcelHelpers.interopDefault(_theFooter);
 class App extends (0, _core.Component) {
     render() {
+        const theHeader = new (0, _theHeaderDefault.default)().el;
+        const theFooter = new (0, _theFooterDefault.default)().el;
         const routerView = document.createElement("router-view");
-        this.el.append(routerView);
+        this.el.append(theHeader, routerView, theFooter);
     }
 }
 exports.default = App;
 
-},{"./core/core":"3SuZC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3SuZC":[function(require,module,exports) {
+},{"./core/core":"3SuZC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./components/TheHeader":"3Cyq4","./components/TheFooter":"b3x3c"}],"3SuZC":[function(require,module,exports) {
 ///// Component /////
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -714,7 +720,84 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"3L9mC":[function(require,module,exports) {
+},{}],"3Cyq4":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _core = require("../core/core");
+class TheHeader extends (0, _core.Component) {
+    constructor(){
+        super({
+            tagName: "header",
+            state: {
+                menus: [
+                    {
+                        name: "Search",
+                        href: "#/"
+                    },
+                    {
+                        name: "Movie",
+                        href: "#/movie?id=tt4520988"
+                    },
+                    {
+                        name: "About",
+                        href: "#/about"
+                    }
+                ]
+            }
+        });
+        window.addEventListener("popstate", ()=>{
+            this.render();
+        });
+    }
+    render() {
+        this.el.innerHTML = /* html */ `
+        <a href="#/" class="logo"><span>OMDbAPI</span>.COM</a>
+        <nav>
+            <ul>
+                ${this.state.menus.map((menu)=>{
+            const href = menu.href.split("?")[0];
+            const hash = location.hash.split("?")[0];
+            const isActive = href === hash;
+            return /* html */ `
+                        <li>
+                            <a class="${isActive ? "active" : ""}" href="${menu.href}">${menu.name}</a>
+                        </li>
+                    `;
+        }).join("")}
+            </ul>
+        </nav>
+        <a href="#/about" class="user">
+            <img src="https://heropy.blog/css/images/logo.png" alt="User">
+        </a>
+        `;
+    }
+}
+exports.default = TheHeader;
+
+},{"../core/core":"3SuZC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"b3x3c":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _core = require("../core/core");
+class TheFooter extends (0, _core.Component) {
+    constructor(){
+        super({
+            tagName: "footer"
+        });
+    }
+    render() {
+        this.el.innerHTML = /* html */ `
+            <div>
+                <a href="https://github.com/hyun1994/FE/tree/main/movie">GitHub Repository</a>
+            </div>
+            <div>
+                <a href="https://github.com/hyun1994">${new Date().getFullYear()} Jihyun</a>
+            </div>
+        `;
+    }
+}
+exports.default = TheFooter;
+
+},{"../core/core":"3SuZC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3L9mC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _core = require("../core/core");
