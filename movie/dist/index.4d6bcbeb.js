@@ -767,7 +767,7 @@ class TheHeader extends (0, _core.Component) {
             </ul>
         </nav>
         <a href="#/about" class="user">
-            <img src="https://heropy.blog/css/images/logo.png" alt="User">
+            <img src="https://user-images.githubusercontent.com/87411381/250159355-2567d870-2a53-480c-ab6c-228bbb82ed16.jpeg" alt="User">
         </a>
         `;
     }
@@ -805,7 +805,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _core = require("../core/core");
 exports.default = new (0, _core.Store)({
-    photo: "https://heropy.blog/css/images/logo.png",
+    photo: "https://user-images.githubusercontent.com/87411381/250159355-2567d870-2a53-480c-ab6c-228bbb82ed16.jpeg",
     name: "Jihyun / ChaeJiHyun",
     email: "chaeji1994@gmail.com",
     github: "https://github.com/hyun1994",
