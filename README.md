@@ -1,1 +1,2 @@
 # FE
+Movie Search app
