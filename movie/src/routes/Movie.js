@@ -42,7 +42,7 @@ export default class Movie extends Component {
                 </div>
                 <div>
                     <h3>Actors</h3>
-                    <p>${movie.Actor}</p>
+                    <p>${movie.Actors}</p>
                 </div>
                 <div>
                     <h3>Director</h3>
